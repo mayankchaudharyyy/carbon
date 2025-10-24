@@ -1,16 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Trash2, Calendar, Activity } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/supabase.js';
 import { format } from 'date-fns';
 
-interface ActivityListProps {
-  activities: any[];
-  onUpdate: () => void;
-}
-
-export function ActivityList({ activities, onUpdate }: ActivityListProps) {
-  const handleDelete = async (id: string) => {
+export function ActivityList({ activities, onUpdate }) {
+  const handleDelete = async (id) => {
     const { error } = await supabase
       .from('activities')
       .delete()
@@ -24,7 +19,7 @@ export function ActivityList({ activities, onUpdate }: ActivityListProps) {
     onUpdate();
   };
 
-  const getCategoryIcon = (category: string) => {
+  const getCategoryIcon = (category) => {
     const icons = {
       transport: '🚗',
       electricity: '⚡',
@@ -32,10 +27,10 @@ export function ActivityList({ activities, onUpdate }: ActivityListProps) {
       waste: '🗑️',
       home: '🏠'
     };
-    return icons[category as keyof typeof icons] || '📊';
+    return icons[category] || '📊';
   };
 
-  const getCategoryColor = (category: string) => {
+  const getCategoryColor = (category) => {
     const colors = {
       transport: 'bg-blue-100 text-blue-800',
       electricity: 'bg-yellow-100 text-yellow-800',
@@ -43,7 +38,7 @@ export function ActivityList({ activities, onUpdate }: ActivityListProps) {
       waste: 'bg-red-100 text-red-800',
       home: 'bg-purple-100 text-purple-800'
     };
-    return colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+    return colors[category] || 'bg-gray-100 text-gray-800';
   };
 
   if (activities.length === 0) {

@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Award, Lock } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../hooks/useAuth';
+import { supabase } from '../lib/supabase.js';
+import { useAuth } from '../hooks/useAuth.js';
 
-interface AchievementPanelProps {
-  expanded?: boolean;
-}
-
-export function AchievementPanel({ expanded = false }: AchievementPanelProps) {
+export function AchievementPanel({ expanded = false }) {
   const { user } = useAuth();
   const [achievements, setAchievements] = useState([]);
   const [userAchievements, setUserAchievements] = useState([]);
@@ -50,8 +46,8 @@ export function AchievementPanel({ expanded = false }: AchievementPanelProps) {
     setLoading(false);
   };
 
-  const isAchievementUnlocked = (achievementId: string) => {
-    return userAchievements.some((ua: any) => ua.achievement_id === achievementId);
+  const isAchievementUnlocked = (achievementId) => {
+    return userAchievements.some((ua) => ua.achievement_id === achievementId);
   };
 
   const displayAchievements = expanded ? achievements : achievements.slice(0, 3);
@@ -79,7 +75,7 @@ export function AchievementPanel({ expanded = false }: AchievementPanelProps) {
       </div>
 
       <div className="space-y-3">
-        {displayAchievements.map((achievement: any, index) => {
+        {displayAchievements.map((achievement, index) => {
           const isUnlocked = isAchievementUnlocked(achievement.id);
           
           return (
@@ -119,9 +115,7 @@ export function AchievementPanel({ expanded = false }: AchievementPanelProps) {
 
       {!expanded && achievements.length > 3 && (
         <div className="mt-4 text-center">
-          <p className="text-sm text-gray-500">
-            {userAchievements.length} of {achievements.length} achievements unlocked
-          </p>
+           
         </div>
       )}
     </div>

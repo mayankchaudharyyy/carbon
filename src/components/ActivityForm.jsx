@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { X, Save } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../hooks/useAuth';
-import { calculateCarbonFootprint } from '../lib/carbonCalculator';
+import { supabase } from '../lib/supabase.js';
+import { useAuth } from '../hooks/useAuth.js';
+import { calculateCarbonFootprint } from '../lib/carbonCalculator.js';
 
 const ACTIVITY_CATEGORIES = {
   transport: {
@@ -50,12 +50,7 @@ const ACTIVITY_CATEGORIES = {
   }
 };
 
-interface ActivityFormProps {
-  onClose: () => void;
-  onSuccess: () => void;
-}
-
-export function ActivityForm({ onClose, onSuccess }: ActivityFormProps) {
+export function ActivityForm({ onClose, onSuccess }) {
   const { user } = useAuth();
   const [formData, setFormData] = useState({
     category: '',
@@ -66,7 +61,7 @@ export function ActivityForm({ onClose, onSuccess }: ActivityFormProps) {
   });
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) return;
 
@@ -80,7 +75,7 @@ export function ActivityForm({ onClose, onSuccess }: ActivityFormProps) {
         amount
       );
 
-      const subcategoryInfo = ACTIVITY_CATEGORIES[formData.category as keyof typeof ACTIVITY_CATEGORIES]
+      const subcategoryInfo = ACTIVITY_CATEGORIES[formData.category]
 
       const { error } = await supabase
         .from('activities')
@@ -107,7 +102,7 @@ export function ActivityForm({ onClose, onSuccess }: ActivityFormProps) {
     }
   };
 
-  const selectedCategory = ACTIVITY_CATEGORIES[formData.category as keyof typeof ACTIVITY_CATEGORIES];
+  const selectedCategory = ACTIVITY_CATEGORIES[formData.category];
   const selectedSubcategory = selectedCategory?.subcategories.find(sub => sub.id === formData.subcategory);
 
   return (

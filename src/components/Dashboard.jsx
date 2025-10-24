@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   TrendingUp, 
@@ -7,17 +7,19 @@ import {
   Plus, 
   Calendar,
   BarChart3,
-  Lightbulb
+  Lightbulb,
+  Menu,
+  X
 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../hooks/useAuth';
-import { ActivityForm } from './ActivityForm';
-import { ActivityList } from './ActivityList';
-import { CarbonChart } from './CarbonChart';
-import { AchievementPanel } from './AchievementPanel';
-import { SuggestionPanel } from './SuggestionPanel';
-import { GoalPanel } from './GoalPanel';
-import { format, startOfMonth, endOfMonth } from 'date-fns';
+import { supabase } from '../lib/supabase.js';
+import { useAuth } from '../hooks/useAuth.js';
+import { ActivityForm } from './ActivityForm.jsx';
+import { ActivityList } from './ActivityList.jsx';
+import { CarbonChart } from './CarbonChart.jsx';
+import { AchievementPanel } from './AchievementPanel.jsx';
+import { SuggestionPanel } from './SuggestionPanel.jsx';
+import { GoalPanel } from './GoalPanel.jsx';
+import { startOfMonth, endOfMonth } from 'date-fns';
 
 export function Dashboard() {
   const { user } = useAuth();
@@ -30,6 +32,7 @@ export function Dashboard() {
     trend: 0
   });
   const [activeTab, setActiveTab] = useState('overview');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -38,10 +41,12 @@ export function Dashboard() {
   }, [user]);
 
   const fetchActivities = async () => {
+    if (!user?.id) return;
+    
     const { data, error } = await supabase
       .from('activities')
       .select('*')
-      .eq('user_id', user?.id)
+      .eq('user_id', user.id)
       .order('date', { ascending: false });
 
     if (error) {
@@ -53,7 +58,7 @@ export function Dashboard() {
     calculateCarbonStats(data || []);
   };
 
-  const calculateCarbonStats = (activities: any[]) => {
+  const calculateCarbonStats = (activities) => {
     const now = new Date();
     const thisMonthStart = startOfMonth(now);
     const thisMonthEnd = endOfMonth(now);
@@ -161,22 +166,51 @@ export function Dashboard() {
         </div>
 
         <div className="border-b border-gray-200 mb-8">
-          <nav className="flex space-x-8">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                  activeTab === tab.id
-                    ? 'border-emerald-500 text-emerald-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                <tab.icon className="w-4 h-4" />
-                {tab.label}
-              </button>
-            ))}
-          </nav>
+          <div className="flex items-center justify-between">
+            <nav className="hidden md:flex space-x-8">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    activeTab === tab.id
+                      ? 'border-emerald-500 text-emerald-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  <tab.icon className="w-4 h-4" />
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
+            <button 
+              className="md:hidden p-2" 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+          {isMenuOpen && (
+            <div className="md:hidden flex flex-col space-y-2 mt-4">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                    setIsMenuOpen(false);
+                  }}
+                  className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    activeTab === tab.id
+                      ? 'border-emerald-500 text-emerald-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  <tab.icon className="w-4 h-4" />
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="space-y-6">

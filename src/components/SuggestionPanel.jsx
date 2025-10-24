@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Lightbulb, TrendingDown, Clock } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/supabase.js';
 
-interface SuggestionPanelProps {
-  expanded?: boolean;
-}
-
-export function SuggestionPanel({ expanded = false }: SuggestionPanelProps) {
+export function SuggestionPanel({ expanded = false }) {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,22 +26,22 @@ export function SuggestionPanel({ expanded = false }: SuggestionPanelProps) {
     setLoading(false);
   };
 
-  const getDifficultyColor = (difficulty: string) => {
+  const getDifficultyColor = (difficulty) => {
     const colors = {
       easy: 'bg-green-100 text-green-800',
       medium: 'bg-yellow-100 text-yellow-800',
       hard: 'bg-red-100 text-red-800'
     };
-    return colors[difficulty as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+    return colors[difficulty] || 'bg-gray-100 text-gray-800';
   };
 
-  const getDifficultyIcon = (difficulty: string) => {
+  const getDifficultyIcon = (difficulty) => {
     const icons = {
       easy: '🟢',
       medium: '🟡',
       hard: '🔴'
     };
-    return icons[difficulty as keyof typeof icons] || '⚪';
+    return icons[difficulty] || '⚪';
   };
 
   const displaySuggestions = expanded ? suggestions : suggestions.slice(0, 3);
@@ -73,7 +69,7 @@ export function SuggestionPanel({ expanded = false }: SuggestionPanelProps) {
       </div>
 
       <div className="space-y-4">
-        {displaySuggestions.map((suggestion: any, index) => (
+        {displaySuggestions.map((suggestion, index) => (
           <motion.div
             key={suggestion.id}
             initial={{ opacity: 0, y: 20 }}
@@ -106,9 +102,7 @@ export function SuggestionPanel({ expanded = false }: SuggestionPanelProps) {
 
       {!expanded && suggestions.length > 3 && (
         <div className="mt-4 text-center">
-          <p className="text-sm text-gray-500">
-            {suggestions.length - 3} more suggestions available
-          </p>
+           
         </div>
       )}
     </div>

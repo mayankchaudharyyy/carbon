@@ -37,34 +37,23 @@ export const CARBON_FACTORS = {
   }
 };
 
-export function calculateCarbonFootprint(
-  category: string,
-  subcategory: string,
-  amount: number
-): number {
-  const categoryFactors = CARBON_FACTORS[category as keyof typeof CARBON_FACTORS];
+export function calculateCarbonFootprint(category, subcategory, amount) {
+  const categoryFactors = CARBON_FACTORS[category];
   if (!categoryFactors) return 0;
-
-  const factor = categoryFactors[subcategory as keyof typeof categoryFactors];
+  const factor = categoryFactors[subcategory];
   if (typeof factor !== 'number') return 0;
-
   return amount * factor;
 }
 
-export function getCarbonFactorInfo(category: string, subcategory: string) {
-  const categoryFactors = CARBON_FACTORS[category as keyof typeof CARBON_FACTORS];
+export function getCarbonFactorInfo(category, subcategory) {
+  const categoryFactors = CARBON_FACTORS[category];
   if (!categoryFactors) return null;
-
-  const factor = categoryFactors[subcategory as keyof typeof categoryFactors];
+  const factor = categoryFactors[subcategory];
   if (typeof factor !== 'number') return null;
-
-  return {
-    factor,
-    unit: getUnitForCategory(category, subcategory)
-  };
+  return { factor, unit: getUnitForCategory(category, subcategory) };
 }
 
-function getUnitForCategory(category: string, subcategory: string): string {
+function getUnitForCategory(category, subcategory) {
   if (category === 'transport') return 'km';
   if (category === 'electricity') return 'kWh';
   if (category === 'food') return 'kg';
@@ -73,6 +62,6 @@ function getUnitForCategory(category: string, subcategory: string): string {
   return 'unit';
 }
 
-export function getRecommendedUnit(category: string, subcategory: string): string {
+export function getRecommendedUnit(category, subcategory) {
   return getUnitForCategory(category, subcategory);
 }

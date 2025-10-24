@@ -1,15 +1,14 @@
 import React from 'react';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { useAuth } from './hooks/useAuth';
-import { AuthForm } from './components/AuthForm';
-import { Header } from './components/Header';
-import { Footer } from './components/Footer';
-import { Dashboard } from './components/Dashboard';
+import { ErrorBoundary } from './components/ErrorBoundary.jsx';
+import { useAuth } from './hooks/useAuth.js';
+import { AuthForm } from './components/AuthForm.jsx';
+import { Header } from './components/Header.jsx';
+import { Footer } from './components/Footer.jsx';
+import { Dashboard } from './components/Dashboard.jsx';
 
 function App() {
   const { user, loading } = useAuth();
 
-  // Check if Supabase is configured
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
   const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 

@@ -2,11 +2,7 @@ import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { format, startOfWeek, endOfWeek, eachDayOfInterval } from 'date-fns';
 
-interface CarbonChartProps {
-  activities: any[];
-}
-
-export function CarbonChart({ activities }: CarbonChartProps) {
+export function CarbonChart({ activities }) {
   const getWeeklyData = () => {
     const now = new Date();
     const start = startOfWeek(now);
@@ -37,7 +33,7 @@ export function CarbonChart({ activities }: CarbonChartProps) {
       }
       acc[category] += activity.carbon_footprint;
       return acc;
-    }, {} as Record<string, number>);
+    }, {});
 
     return Object.entries(categories).map(([category, carbon]) => ({
       category: category.charAt(0).toUpperCase() + category.slice(1),

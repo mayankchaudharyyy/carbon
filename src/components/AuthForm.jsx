@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Leaf, Mail, Lock, User, LogIn, UserPlus, AlertCircle, Info } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuth.js';
 
 export function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,10 +14,9 @@ export function AuthForm() {
 
   const { signIn, signUp } = useAuth();
 
-  const getErrorMessage = (error: any) => {
+  const getErrorMessage = (error) => {
     const message = error.message || error;
     
-    // Enhanced error messages for better UX
     if (message.includes('User already registered') || message.includes('already exists')) {
       return 'This email is already registered. Please sign in instead or use a different email.';
     }
@@ -37,7 +36,7 @@ export function AuthForm() {
     return message;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
@@ -63,7 +62,7 @@ export function AuthForm() {
         const { error } = await signUp(email, password, fullName);
         if (error) throw error;
       }
-    } catch (err: any) {
+    } catch (err) {
       setError(getErrorMessage(err));
     } finally {
       setLoading(false);
@@ -189,7 +188,6 @@ export function AuthForm() {
               )}
             </button>
 
-            {/* Development Notice */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Target, Plus, Calendar, TrendingDown } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../hooks/useAuth';
+import { supabase } from '../lib/supabase.js';
+import { useAuth } from '../hooks/useAuth.js';
 import { format, addMonths } from 'date-fns';
 
 export function GoalPanel() {
@@ -37,7 +37,7 @@ export function GoalPanel() {
     setLoading(false);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) return;
 
@@ -65,7 +65,7 @@ export function GoalPanel() {
     fetchGoals();
   };
 
-  const updateGoalStatus = async (goalId: string, status: string) => {
+  const updateGoalStatus = async (goalId, status) => {
     const { error } = await supabase
       .from('goals')
       .update({ status })
@@ -171,7 +171,7 @@ export function GoalPanel() {
         </div>
       ) : (
         <div className="space-y-4">
-          {goals.map((goal: any, index) => (
+          {goals.map((goal, index) => (
             <motion.div
               key={goal.id}
               initial={{ opacity: 0, y: 20 }}
