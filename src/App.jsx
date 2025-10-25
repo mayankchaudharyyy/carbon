@@ -6,7 +6,6 @@ import { Header } from './components/Header.jsx';
 import { Footer } from './components/Footer.jsx';
 import { Dashboard } from './components/Dashboard.jsx';
 
- 
 function ElevenLabsAgent() {
   useEffect(() => {
     const script = document.createElement("script");
@@ -21,7 +20,7 @@ function ElevenLabsAgent() {
   }, []);
 
   return (
-    <elevenlabs-convai agent-id="agent_8301k8cv3jt9edrtd2b902tct4b1"></elevenlabs-convai>
+    <elevenlabs-convai agent-id="agent_1801k8dvpcwhfw5a7cw945kdzr9m"></elevenlabs-convai>
   );
 }
 
@@ -74,7 +73,7 @@ function App() {
       <div className="min-h-screen bg-gray-50">
         <Header />
         <Dashboard />
-        <ElevenLabsAgent />  
+        <ElevenLabsAgent />
         <Footer />
       </div>
     </ErrorBoundary>
