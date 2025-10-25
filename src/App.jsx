@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ErrorBoundary } from './components/ErrorBoundary.jsx';
 import { useAuth } from './hooks/useAuth.js';
 import { AuthForm } from './components/AuthForm.jsx';
 import { Header } from './components/Header.jsx';
 import { Footer } from './components/Footer.jsx';
 import { Dashboard } from './components/Dashboard.jsx';
+
+ 
+function ElevenLabsAgent() {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://unpkg.com/@elevenlabs/convai-widget-embed";
+    script.async = true;
+    script.type = "text/javascript";
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  return (
+    <elevenlabs-convai agent-id="agent_8301k8cv3jt9edrtd2b902tct4b1"></elevenlabs-convai>
+  );
+}
 
 function App() {
   const { user, loading } = useAuth();
@@ -55,6 +74,7 @@ function App() {
       <div className="min-h-screen bg-gray-50">
         <Header />
         <Dashboard />
+        <ElevenLabsAgent />  
         <Footer />
       </div>
     </ErrorBoundary>
